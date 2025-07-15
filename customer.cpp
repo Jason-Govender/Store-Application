@@ -1,9 +1,11 @@
 #include "customer.h"
 
-Customer::Customer(const QString& name) {
-    m_name = name;
+Customer::Customer(const QString& name)
+    :m_name(name)
+{
+
 }
 
-QString getName() const{
+QString Customer::getName() const{
     return m_name;
 }
