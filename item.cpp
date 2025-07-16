@@ -2,9 +2,7 @@
 
 Item::Item(const QString& name, ItemType type)
     :m_name(name), m_type(type)
-{
-
-}
+{}
 
 QString Item::getName() const{
     return m_name;
@@ -24,5 +22,4 @@ QString Item::convertToString() const{
         break;
     //Can easily extend to more item types.
     }
-
 }

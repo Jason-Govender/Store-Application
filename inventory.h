@@ -5,7 +5,8 @@
 class Inventory
 {
 public:
-    Inventory(QList<Item*> items);
+    Inventory();
+    Inventory(QList<Item*> items, QList<Customer*> customers);
     ~Inventory();
     QList<Customer*> getCustomers();
     void addItem(Item* item);
@@ -13,7 +14,10 @@ public:
 
 private:
     QList<Item*> m_items;
-    QList<Customer*> m_customers;
+    QList<Customer*> m_customers{
+        new Customer("Jane"),
+        new Customer("John"),
+    };
 };
 
 #endif // INVENTORY_H

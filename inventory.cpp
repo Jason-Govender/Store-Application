@@ -1,13 +1,22 @@
 #include "inventory.h"
 
-Inventory::Inventory(QList <Item*> items)
-    :m_items(items)
+Inventory::Inventory()
+{}
+Inventory::Inventory(QList <Item*> items, QList <Customer*> customers)
+    :m_items(items), m_customers(customers)
 {}
 
 Inventory::~Inventory(){
     for(Item* item : m_items){
         delete item;
     }
+    for(Customer* c : m_customers){
+        delete c;
+    }
+}
+
+QList<Customer*> Inventory::getCustomers(){
+    return m_customers;
 }
 
 void Inventory::addItem(Item* item){
