@@ -8,6 +8,12 @@
 #include <QAction>
 #include <QMessageBox>
 #include <QFile>
+#include <QDialog>
+#include <QVBoxLayout>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QComboBox>
 
 class MainWindow : public QMainWindow
 {
@@ -31,6 +37,7 @@ private slots:
     void showAbout();
     void showHelp();
     void showRestore();
+    void showAddItem();
 
 };
 #endif // MAINWINDOW_H

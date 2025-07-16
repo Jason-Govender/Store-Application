@@ -30,6 +30,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(about, &QAction::triggered, this, &MainWindow::showAbout);
     connect(help, &QAction::triggered, this, &MainWindow::showHelp);
     connect(restore, &QAction::triggered, this, &MainWindow::showRestore);
+    connect(addItem, &QAction::triggered, this, &MainWindow::showAddItem);
     mainView->setModel(customerModel);
     setCentralWidget(mainView);
 
@@ -68,6 +69,46 @@ void MainWindow::showRestore(){
     for (Item* backup : store->getBackup())
         store->getItems().append(new Item(*backup));
     QMessageBox::about(this, "Restore", "Inventory Successfully Restored");
+}
+
+void MainWindow::showAddItem(){
+    QDialog dialog(this);
+    dialog.setWindowTitle("Add Item");
+
+    QVBoxLayout* layout = new QVBoxLayout(&dialog);
+
+    QLabel* prompt = new QLabel("Enter item details below:");
+    layout->addWidget(prompt);
+
+    QComboBox* typeCombo = new QComboBox();
+    typeCombo->addItem("Book");
+    typeCombo->addItem("Magazine");
+    layout->addWidget(typeCombo);
+
+    QLineEdit* input = new QLineEdit();
+    input->setPlaceholderText("Item name");
+    layout->addWidget(input);
+
+    QPushButton* addButton = new QPushButton("Add Item");
+    layout->addWidget(addButton);
+
+
+    connect(addButton, &QPushButton::clicked, [&]() {
+        if (input->text().isEmpty()) {
+            QMessageBox::warning(&dialog, "Invalid Input", "Please enter a valid name");
+            return;
+        }
+        else{
+            dialog.accept();
+        }
+    });
+
+    if (dialog.exec() == QDialog::Accepted) {
+        Item* item = new Item(input->text(), typeCombo->currentText());
+        store->addItem(item);
+        store->getBackup() = store->getItems();
+    }
+
 }
 
 
