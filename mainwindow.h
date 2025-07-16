@@ -1,7 +1,9 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
-
+#include <QTreeView>
 #include <QMainWindow>
+#include <QStandardItemModel>
+#include "inventory.h"
 
 class MainWindow : public QMainWindow
 {
@@ -10,5 +12,9 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+private:
+    QTreeView* mainView;
+    QStandardItemModel* customerModel;
+    Inventory* store;
 };
 #endif // MAINWINDOW_H
