@@ -1,0 +1,8 @@
+Bargain Literature
+Created by Jason Govender
+Version 1.0
+
+Description:
+This app is used to add items
+to the inventory and record transactions
+with our customers.

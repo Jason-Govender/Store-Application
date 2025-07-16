@@ -1,0 +1,15 @@
+To add items:
+1. Click the button labelled "Add"
+   in the toolbar.
+2. Choose one of the two item types.
+3. Type the quantity you would like
+   to add.
+
+To process a transaction:
+1. Click the button labelled process.
+2. Fill in the required details and click
+   confirm.
+
+Note: If a mistake is made, click the restore
+button in the toolbar to restore the list to a
+previous state
