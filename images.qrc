@@ -2,5 +2,7 @@
     <qresource prefix="/">
         <file>splash.png</file>
         <file>icon.png</file>
+        <file>about.txt</file>
+        <file>help.txt</file>
     </qresource>
 </RCC>

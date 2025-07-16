@@ -10,7 +10,6 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
     app.setWindowIcon(QIcon(":/icon.png"));
     QPixmap pixmap(":/splash.png");
-    qDebug() << "Is splash image valid? " << !pixmap.isNull();
     QSplashScreen splash(pixmap);
     splash.show();
     app.processEvents();
