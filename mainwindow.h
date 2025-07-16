@@ -4,6 +4,10 @@
 #include <QMainWindow>
 #include <QStandardItemModel>
 #include "inventory.h"
+#include <QToolBar>
+#include <QAction>
+#include <QMessageBox>
+#include <QFile>
 
 class MainWindow : public QMainWindow
 {
@@ -16,5 +20,17 @@ private:
     QTreeView* mainView;
     QStandardItemModel* customerModel;
     Inventory* store;
+    QToolBar* toolbar;
+    QAction* addItem;
+    QAction* file;
+    QAction* restore;
+    QAction* about;
+    QAction* help;
+
+private slots:
+    void showAbout();
+    void showHelp();
+    void showRestore();
+
 };
 #endif // MAINWINDOW_H
