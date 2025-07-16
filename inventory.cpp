@@ -19,6 +19,14 @@ QList<Customer*> Inventory::getCustomers(){
     return m_customers;
 }
 
+QList<Item*> Inventory::getItems(){
+    return m_items;
+}
+
+QList<Item*> Inventory::getBackup(){
+    return m_backup;
+}
+
 void Inventory::addItem(Item* item){
     m_items.append(item);
 }
@@ -39,6 +47,5 @@ void Inventory::processTransaction(const Transaction& transaction){
             }
         }
     }
-    else
-        qDebug() << "The item and/or quantity is not in stock.";
+
 }
