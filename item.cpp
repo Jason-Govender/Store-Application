@@ -4,6 +4,9 @@ Item::Item(const QString& name, ItemType type)
     :m_name(name), m_type(type)
 {}
 
+Item::Item(const Item& i)
+    :m_name(i.m_name), m_type(i.m_type)  //Copy Constructor
+{}
 QString Item::getName() const{
     return m_name;
 }
