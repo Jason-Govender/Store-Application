@@ -22,11 +22,6 @@ MainWindow::MainWindow(QWidget *parent)
     customerModel = new QStandardItemModel(this);
     customerModel->setHorizontalHeaderLabels(QStringList() << "Transaction" << "Type" << "Quantity");
 
-    //Generates the customer list in the main menu.
-    for (Customer* c : store->getCustomers() ){
-        QStandardItem* customer = new QStandardItem(c->getName());
-        customerModel->appendRow(customer);
-    }
     connect(about, &QAction::triggered, this, &MainWindow::showAbout);
     connect(help, &QAction::triggered, this, &MainWindow::showHelp);
     connect(restore, &QAction::triggered, this, &MainWindow::showRestore);
@@ -154,7 +149,7 @@ void MainWindow::showTransact(){
     layout->addWidget(transactButton, 6,1);
 
 
-    connect(addButton, &QPushButton::clicked, this, [=](){
+    connect(addButton, &QPushButton::clicked, this, [&](){
         Customer* cP = customer->currentData().value<Customer*>();
         Item* iP = itemName->currentData().value<Item*>();
         Transaction* transaction = new Transaction();
@@ -168,15 +163,62 @@ void MainWindow::showTransact(){
         int q = transaction->getQuantity();
         QDateTime dt = transaction->getdateTime();
 
-        QString statement = c + " " + i + " " + QString::number(q) + " " + dt.toString("yyyy-MM-dd hh:mm:ss");
+        if( store->processTransaction(&display, *transaction)){
+            QString statement = c + " " + i + " " + QString::number(q) + " " + dt.toString("yyyy-MM-dd hh:mm:ss");
 
-        list->addItem(statement);
+            list->addItem(statement);
+            store->addTransaction(transaction);
+        }
+        else{
+            delete transaction;
+            return;
+        }
+    });
+
+    connect(transactButton, &QPushButton::clicked, this, [&](){
+        display.accept();
+        updateMainView();
     });
 
     display.exec();
 }
 
+void MainWindow::updateMainView(){
+    customerModel->clear();
+    customerModel->setHorizontalHeaderLabels(QStringList() << "Transaction" << "Type" << "Quantity");
+    for (Customer* c : store->getCustomers()){
+        QStandardItem* cItem = new QStandardItem(c->getName());
+        for(Transaction* t : store->getTransactions()){
+            if (t->getCustomer() == c) {
+                QString dateTime = t->getdateTime().toString("yyyy-MM-dd hh:mm:ss");
+                QStandardItem* dateItem = nullptr;
+                for (int i = 0; i < cItem->rowCount(); ++i) {
+                    QStandardItem* child = cItem->child(i);
+                    if (child->text() == dateTime) {
+                         dateItem = child;
+                        break;
+                    }
+                }
 
+
+                if (!dateItem) {
+                    dateItem = new QStandardItem(dateTime);
+                    cItem->appendRow(dateItem);
+                }
+
+                QList<QStandardItem*> transactionRow;
+                QStandardItem* itemName = new QStandardItem(t->getItem()->getName());
+                QStandardItem* itemType = new QStandardItem(t->getItem()->getType());
+                QStandardItem* quantity = new QStandardItem(QString::number(t->getQuantity()));
+                transactionRow << itemName << itemType << quantity;
+                dateItem->appendRow(transactionRow);
+            }
+        }
+
+        customerModel->appendRow(cItem);
+    }
+
+}
 
 
 

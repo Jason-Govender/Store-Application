@@ -25,6 +25,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void updateMainView();
 private:
     QTreeView* mainView;
     QStandardItemModel* customerModel;

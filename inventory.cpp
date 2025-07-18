@@ -27,17 +27,28 @@ QList<Item*> Inventory::getBackup(){
     return m_backup;
 }
 
+QList<Transaction*> Inventory::getTransactions(){
+    return m_transactions;
+}
+
+void Inventory::addTransaction(Transaction* t) {
+    m_transactions.append(t);
+}
+
 void Inventory::addItem(Item* item){
     m_items.append(item);
 }
 
-void Inventory::processTransaction(const Transaction& transaction){
+bool Inventory::processTransaction(QDialog* w, const Transaction& transaction){
     int inStock = 0;
     for (Item* item : m_items){
         if(item == transaction.getItem())
         ++inStock;
     }
-
+    if (inStock < transaction.getQuantity()) {
+        QMessageBox::warning(w, "Error", "Insufficient Stock");
+        return false;
+    }
     if(inStock>=transaction.getQuantity()){
         for (int i=m_items.size(); i>=0 && inStock>0; --i){
             if (m_items[i] == transaction.getItem()){
@@ -47,5 +58,8 @@ void Inventory::processTransaction(const Transaction& transaction){
             }
         }
     }
+
+    QMessageBox::about(w, "Success", "Transaction Successful");
+    return true;
 
 }
