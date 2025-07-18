@@ -12,6 +12,10 @@ public:
     QDateTime getdateTime()const;
     int getQuantity()const;
     void setQuantity(int quantity);
+    void setCustomer(const QString& customer);
+    void setItem(const QString& item);
+    void setDateTime(const QDateTime& datetime);
+
     //We can include more setters to make the software customizable.
 private:
     Customer* m_customer;

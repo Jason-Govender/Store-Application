@@ -23,3 +23,15 @@ int Transaction::getQuantity()const{
 void Transaction::setQuantity(int quantity){
     m_quantity = quantity;
 }
+
+void Transaction::setCustomer(const QString& customer){
+    m_customer->getName() = customer;
+}
+
+void Transaction::setItem(const QString& item){
+    m_item->getName() = item;
+}
+
+void Transaction::setDateTime(const QDateTime& dateTime){
+    m_dateTime = dateTime;
+}
