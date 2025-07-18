@@ -7,16 +7,16 @@ class Transaction
 {
 public:
     Transaction(Customer* customer, Item* item, const QDateTime& dateTime, int quantity);
+    Transaction();
     Customer* getCustomer()const;
     Item* getItem()const;
     QDateTime getdateTime()const;
     int getQuantity()const;
     void setQuantity(int quantity);
-    void setCustomer(const QString& customer);
-    void setItem(const QString& item);
+    void setCustomer(Customer* customer);
+    void setItem(Item* item);
     void setDateTime(const QDateTime& datetime);
 
-    //We can include more setters to make the software customizable.
 private:
     Customer* m_customer;
     Item* m_item;

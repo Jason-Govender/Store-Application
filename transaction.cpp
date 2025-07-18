@@ -4,6 +4,9 @@ Transaction::Transaction(Customer* customer, Item* item, const QDateTime& dateTi
     :m_customer(customer), m_item(item), m_dateTime(dateTime), m_quantity(quantity)
 {}
 
+Transaction::Transaction()
+{}
+
 Customer* Transaction::getCustomer()const{
     return m_customer;
 }
@@ -24,12 +27,12 @@ void Transaction::setQuantity(int quantity){
     m_quantity = quantity;
 }
 
-void Transaction::setCustomer(const QString& customer){
-    m_customer->getName() = customer;
+void Transaction::setCustomer(Customer*customer){
+    m_customer = customer;
 }
 
-void Transaction::setItem(const QString& item){
-    m_item->getName() = item;
+void Transaction::setItem(Item* item){
+    m_item = item;
 }
 
 void Transaction::setDateTime(const QDateTime& dateTime){

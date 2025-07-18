@@ -14,6 +14,9 @@
 #include <QLineEdit>
 #include <QPushButton>
 #include <QComboBox>
+#include <QSpinBox>
+#include <QListWidget>
+#include <QGridLayout>
 
 class MainWindow : public QMainWindow
 {
@@ -28,12 +31,13 @@ private:
     Inventory* store;
     QToolBar* toolbar;
     QAction* addItem;
-    QAction* file;
+    QAction* transact;
     QAction* restore;
     QAction* about;
     QAction* help;
 
 private slots:
+    void showTransact();
     void showAbout();
     void showHelp();
     void showRestore();

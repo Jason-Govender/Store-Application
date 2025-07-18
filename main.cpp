@@ -4,6 +4,8 @@
 #include <QPixmap>
 #include <QTimer>
 #include <QLabel>
+Q_DECLARE_METATYPE(Customer*)
+Q_DECLARE_METATYPE(Item*)
 
 int main(int argc, char *argv[])
 {
