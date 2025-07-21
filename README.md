@@ -1,4 +1,4 @@
-# Store & Receiver Application (Qt/C++)
+# Storekeeping Application (Qt/C++)
 
 This project showcases real-time model serialization, UDP networking, and Qt GUI design without Qt Designer.
 
@@ -14,14 +14,6 @@ A Qt-based desktop app that:
 - Broadcasts the XML model to the network via UDP (port `50000`)
 - Built with manual Qt widget setup (no `.ui` files)
 - Features: splash screen, toolbar actions, help & about dialogs
-
-##  Receiver Application
-
-A lightweight Qt application that:
-
-- Listens for broadcasted XML model data via `QUdpSocket`
-- Displays received XML in a live-updating `QTextEdit`
-- Built entirely without Qt Designer
 
 ##  Technologies & Concepts
 
