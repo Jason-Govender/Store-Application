@@ -12,6 +12,8 @@ Q_DECLARE_METATYPE(Item*)
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
+    qRegisterMetaType<Customer*>("Customer*");
+    qRegisterMetaType<Item*>("Item*");
     app.setWindowIcon(QIcon(":/icon.png"));
     QPixmap pixmap(":/splash.png");
     QSplashScreen splash(pixmap);

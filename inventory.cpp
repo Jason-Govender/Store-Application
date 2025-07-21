@@ -59,7 +59,7 @@ bool Inventory::processTransaction(QDialog* w, const Transaction& transaction){
 
     //If there is enough stock, remove those items from the stock list.
     if(inStock>=transaction.getQuantity()){
-        for (int i=m_items.size(); i>=0 && inStock>0; --i){
+        for (int i=m_items.size() - 1; i>=0 && inStock>0; --i){
             if (m_items[i] == transaction.getItem()){
                 delete m_items[i];
                 m_items.removeAt(i);
@@ -68,7 +68,7 @@ bool Inventory::processTransaction(QDialog* w, const Transaction& transaction){
         }
     }
 
-    QMessageBox::about(w, "Success", "Transaction Successful");
+
     return true;
 
 }

@@ -13,12 +13,14 @@ MainWindow::MainWindow(QWidget *parent)
     restore = new QAction("Restore", this);
     about = new QAction("About", this);
     help = new QAction("Help", this);
+    bCast = new QAction("Broadcast", this);
     toolbar = addToolBar("Main Toolbar");
     toolbar->addAction(transact);
     toolbar->addAction(addItem);
     toolbar->addAction(restore);
     toolbar->addAction(about);
     toolbar->addAction(help);
+    toolbar->addAction(bCast);
 
     //Provides a model for the treeview and separates the model into three columns.
     customerModel = new QStandardItemModel(this);
@@ -35,10 +37,6 @@ MainWindow::MainWindow(QWidget *parent)
     //Displays GUI
     mainView->setModel(customerModel);
     setCentralWidget(mainView);
-
-    //Sends a UDP signal out
-    QString xml = toXML();
-    broadcast->broadcast(xml);
 
 }
 
