@@ -223,6 +223,7 @@ void MainWindow::showBroadcast(){
     QString xml = toXML();
     broadcast->broadcast(xml);
 }
+
 QString MainWindow::toXML(){
     QString xmlString;
     QXmlStreamWriter xml(&xmlString);

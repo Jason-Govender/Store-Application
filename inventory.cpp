@@ -61,7 +61,6 @@ bool Inventory::processTransaction(QDialog* w, const Transaction& transaction){
     if(inStock>=transaction.getQuantity()){
         for (int i=m_items.size() - 1; i>=0 && inStock>0; --i){
             if (m_items[i] == transaction.getItem()){
-                delete m_items[i];
                 m_items.removeAt(i);
                 --inStock;
             }
