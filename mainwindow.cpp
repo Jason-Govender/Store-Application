@@ -5,6 +5,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     mainView = new QTreeView(this);
     store = new Inventory();
+    broadcast = new Broadcast(this);
 
     //Define actions and add to toolbar
     addItem = new QAction("Add", this);
@@ -29,8 +30,15 @@ MainWindow::MainWindow(QWidget *parent)
     connect(restore, &QAction::triggered, this, &MainWindow::showRestore);
     connect(addItem, &QAction::triggered, this, &MainWindow::showAddItem);
     connect(transact, &QAction::triggered, this, &MainWindow::showTransact);
+    connect(bCast, &QAction::triggered, this, &MainWindow::showBroadcast);
+
+    //Displays GUI
     mainView->setModel(customerModel);
     setCentralWidget(mainView);
+
+    //Sends a UDP signal out
+    QString xml = toXML();
+    broadcast->broadcast(xml);
 
 }
 
@@ -211,6 +219,44 @@ void MainWindow::updateMainView(){
         customerModel->appendRow(cItem);
     }
 
+}
+
+void MainWindow::showBroadcast(){
+    QString xml = toXML();
+    broadcast->broadcast(xml);
+}
+QString MainWindow::toXML(){
+    QString xmlString;
+    QXmlStreamWriter xml(&xmlString);
+    xml.setAutoFormatting(true);
+    xml.writeStartDocument();
+    xml.writeStartElement("ModelData");
+
+    for (Customer* customer : store->getCustomers()) {
+        xml.writeStartElement("customer");
+        xml.writeAttribute("name", customer->getName());
+
+        for (Transaction* transaction : store->getTransactions()) {
+            xml.writeStartElement("transaction");
+            xml.writeAttribute("date", transaction->getdateTime().toString());
+
+            for (Item* item : store->getItems()) {
+                xml.writeEmptyElement("lineitem");
+                xml.writeAttribute("name", item->getName());
+                xml.writeAttribute("type", item->getType());
+                xml.writeAttribute("quantity", QString::number(transaction->getQuantity()));
+            }
+
+            xml.writeEndElement();
+        }
+
+        xml.writeEndElement();
+    }
+
+    xml.writeEndElement();
+    xml.writeEndDocument();
+
+    return xmlString;
 }
 
 

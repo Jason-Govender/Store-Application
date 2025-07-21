@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QStandardItemModel>
 #include "inventory.h"
+#include "broadcast.h"
 #include <QToolBar>
 #include <QAction>
 #include <QMessageBox>
@@ -17,6 +18,7 @@
 #include <QSpinBox>
 #include <QListWidget>
 #include <QGridLayout>
+#include <QXmlStreamWriter>
 
 /* This is where the toolbar and action buttons are defined.
  * The default constructor is used to implement the entire
@@ -35,6 +37,8 @@ public:
      * window once a transaction is processed successfully.*/
     void updateMainView();
 
+    QString toXML();
+
 private:
     QTreeView* mainView;
     QStandardItemModel* customerModel;
@@ -45,6 +49,8 @@ private:
     QAction* restore;
     QAction* about;
     QAction* help;
+    QAction* bCast;
+    Broadcast* broadcast;
 
 private slots:
 /*  Opens a dialog to record a transaction.
@@ -52,6 +58,8 @@ private slots:
     void showTransact();
 
     void showAbout();
+
+    void showBroadcast();
 
     void showHelp();
 
