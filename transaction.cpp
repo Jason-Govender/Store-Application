@@ -7,6 +7,9 @@ Transaction::Transaction(Customer* customer, Item* item, const QDateTime& dateTi
 Transaction::Transaction()
 {}
 
+Transaction::~Transaction()
+{}
+
 Customer* Transaction::getCustomer()const{
     return m_customer;
 }

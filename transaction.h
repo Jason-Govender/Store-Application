@@ -3,11 +3,14 @@
 #include "customer.h"
 #include "item.h"
 #include <QDateTime>
+
+//Defines the attributes of a transaction.
 class Transaction
 {
 public:
     Transaction(Customer* customer, Item* item, const QDateTime& dateTime, int quantity);
     Transaction();
+    ~Transaction();
     Customer* getCustomer()const;
     Item* getItem()const;
     QDateTime getdateTime()const;

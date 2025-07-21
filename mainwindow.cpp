@@ -4,6 +4,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent){
 
     mainView = new QTreeView(this);
+    store = new Inventory();
 
     //Define actions and add to toolbar
     addItem = new QAction("Add", this);
@@ -18,10 +19,11 @@ MainWindow::MainWindow(QWidget *parent)
     toolbar->addAction(about);
     toolbar->addAction(help);
 
-    store = new Inventory();
+    //Provides a model for the treeview and separates the model into three columns.
     customerModel = new QStandardItemModel(this);
     customerModel->setHorizontalHeaderLabels(QStringList() << "Transaction" << "Type" << "Quantity");
 
+    //Provides functionality to action button presses
     connect(about, &QAction::triggered, this, &MainWindow::showAbout);
     connect(help, &QAction::triggered, this, &MainWindow::showHelp);
     connect(restore, &QAction::triggered, this, &MainWindow::showRestore);
@@ -57,40 +59,28 @@ void MainWindow::showHelp(){
 }
 
 void MainWindow::showRestore(){
-        QList<Item*> items = store->getItems();
-        for (Item* item : items)
-            delete item;
-        items.clear();
-
-        const QList<Item*>& backup = store->getBackup();
-        for (Item* b : backup)
-            items.append(new Item(*b));
-
-        QMessageBox::about(this, "Restore", "Inventory Successfully Restored");
+    store->restoreItems();
+    QMessageBox::about(this, "Restore", "Inventory Successfully Restored");
 }
 
 void MainWindow::showAddItem(){
+    //Creates the window, dropdown box and input field.
     QDialog dialog(this);
     dialog.setWindowTitle("Add Item");
-
     QVBoxLayout* layout = new QVBoxLayout(&dialog);
-
     QLabel* prompt = new QLabel("Enter item details below:");
     layout->addWidget(prompt);
-
     QComboBox* typeCombo = new QComboBox();
     typeCombo->addItem("Book");
     typeCombo->addItem("Magazine");
     layout->addWidget(typeCombo);
-
     QLineEdit* input = new QLineEdit();
     input->setPlaceholderText("Item name");
     layout->addWidget(input);
-
     QPushButton* addButton = new QPushButton("Add Item");
     layout->addWidget(addButton);
 
-
+    //Checks to see if the input ais invalid (empty).
     connect(addButton, &QPushButton::clicked, this, [&]() {
         if (input->text().isEmpty()) {
             QMessageBox::warning(&dialog, "Invalid Input", "Please enter a valid name");
@@ -101,6 +91,7 @@ void MainWindow::showAddItem(){
         }
     });
 
+    //Confirms input and adds to the backup list.
     if (dialog.exec() == QDialog::Accepted) {
         Item* item = new Item(input->text(), typeCombo->currentText());
         store->addItem(item);
@@ -108,29 +99,26 @@ void MainWindow::showAddItem(){
     }
 }
 
-void MainWindow::showTransact(){
-    QDialog display(this);
 
+void MainWindow::showTransact(){
+    //Generates window and input field.
+    QDialog display(this);
     display.setWindowTitle("Transaction");
     QGridLayout* layout = new QGridLayout(&display);
-
     QLabel* prompt = new QLabel("Enter transaction details below:");
     layout->addWidget(prompt, 0,1);
-
     QComboBox* customer = new QComboBox(&display);
     for (Customer* c : store->getCustomers()){
         customer->addItem(c->getName(), QVariant::fromValue(c));
     }
     layout->addWidget(new QLabel("Customer:"), 1,0);
     layout->addWidget(customer, 1,1);
-
     QComboBox* itemName = new QComboBox(&display);
     for (Item* item : store->getItems()){
         itemName->addItem(item->getName(), QVariant::fromValue(item));
     }
     layout->addWidget(new QLabel("Item Name:"), 2,0);
     layout->addWidget(itemName, 2,1);
-
     QSpinBox* quantity = new QSpinBox(&display);
     quantity->setMinimum(1);
     quantity->setMaximum(100);
@@ -138,20 +126,24 @@ void MainWindow::showTransact(){
     quantity->setSingleStep(1);
     layout->addWidget(new QLabel("Quantity:"), 3,0);
     layout->addWidget(quantity, 3,1);
-
     QPushButton* addButton = new QPushButton("Add");
     layout->addWidget(addButton, 4,1);
-
     QListWidget* list = new QListWidget(&display);
     layout->addWidget(list, 5,1);
-
     QPushButton* transactButton = new QPushButton("Transact");
     layout->addWidget(transactButton, 6,1);
 
-
+    //Validates input when trying to add items to cart. Displays valid transactions
+    //on the bottom menu.
     connect(addButton, &QPushButton::clicked, this, [&](){
         Customer* cP = customer->currentData().value<Customer*>();
         Item* iP = itemName->currentData().value<Item*>();
+
+        if (!iP) {
+            QMessageBox::warning(&display, "Invalid Item", "The selected item is no longer available.");
+            return;
+        }
+
         Transaction* transaction = new Transaction();
         transaction->setCustomer(cP);
         transaction->setItem(iP);
@@ -175,6 +167,7 @@ void MainWindow::showTransact(){
         }
     });
 
+    //Confirms transaction and updates transaction history treeview.
     connect(transactButton, &QPushButton::clicked, this, [&](){
         display.accept();
         updateMainView();

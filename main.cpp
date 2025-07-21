@@ -7,6 +7,8 @@
 Q_DECLARE_METATYPE(Customer*)
 Q_DECLARE_METATYPE(Item*)
 
+//Displays the mainwindow and implements a timed splashscreen.
+//Sets a window icon.
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);

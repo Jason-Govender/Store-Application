@@ -13,6 +13,9 @@ Inventory::~Inventory(){
     for(Customer* c : m_customers){
         delete c;
     }
+    for(Transaction* t : m_transactions){
+        delete t;
+    }
 }
 
 QList<Customer*> Inventory::getCustomers(){
@@ -41,14 +44,20 @@ void Inventory::addItem(Item* item){
 
 bool Inventory::processTransaction(QDialog* w, const Transaction& transaction){
     int inStock = 0;
+
+    //Increase the counter for every item currently in stock
     for (Item* item : m_items){
         if(item == transaction.getItem())
         ++inStock;
     }
+
+    //If there are more items requested than are in stock.
     if (inStock < transaction.getQuantity()) {
         QMessageBox::warning(w, "Error", "Insufficient Stock");
         return false;
     }
+
+    //If there is enough stock, remove those items from the stock list.
     if(inStock>=transaction.getQuantity()){
         for (int i=m_items.size(); i>=0 && inStock>0; --i){
             if (m_items[i] == transaction.getItem()){
@@ -62,4 +71,14 @@ bool Inventory::processTransaction(QDialog* w, const Transaction& transaction){
     QMessageBox::about(w, "Success", "Transaction Successful");
     return true;
 
+}
+
+void Inventory::restoreItems(){
+    for (Item* item : m_items)
+        delete item;
+
+    m_items.clear();
+
+    for (Item* b : m_backup)
+        m_items.append(new Item(*b));
 }
