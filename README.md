@@ -1,7 +1,8 @@
 # Storekeeping Application (Qt/C++)
 
 This project showcases real-time model serialization, UDP networking, and Qt GUI design without Qt Designer.
-https://youtu.be/22oxLTCc6VI
+[![DEMO](https://img.youtube.com/vi/22oxLTCc6VI/maxresdefault.jpg)](https://youtu.be/22oxLTCc6VI)
+
 
 ## Store Application
 
